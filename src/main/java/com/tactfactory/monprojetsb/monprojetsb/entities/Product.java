@@ -2,19 +2,19 @@ package com.tactfactory.monprojetsb.monprojetsb.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Product {
-	@GeneratedValue
+
 	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	private Float price;
 
 	public Product() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Long getId() {

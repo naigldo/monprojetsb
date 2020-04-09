@@ -5,20 +5,23 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class User {
-	@GeneratedValue
+
 	@Id
+	@GeneratedValue
 	private Long id;
 	private String firstname;
 	private String lastname;
-	private List<Product> list = new ArrayList<Product>();
+	@OneToMany
+	private List<Product> list;
 
 	public User() {
-		// TODO Auto-generated constructor stub
+		this.list = new ArrayList<Product>();
 	}
 
 	public Long getId() {
