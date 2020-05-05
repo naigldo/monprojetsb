@@ -6,4 +6,6 @@ import com.tactfactory.monprojetsb.monprojetsb.entities.User;
 
 public interface UserRepository extends JpaRepository<User,Long>{
 
+	User getUserById(Long id);
+
 }

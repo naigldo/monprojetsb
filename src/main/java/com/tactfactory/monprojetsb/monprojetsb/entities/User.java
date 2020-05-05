@@ -1,6 +1,5 @@
 package com.tactfactory.monprojetsb.monprojetsb.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -20,9 +19,15 @@ public class User {
 	@OneToMany
 	private List<Product> list;
 
-	public User() {
-		this.list = new ArrayList<Product>();
-	}
+    public User() {
+    }
+
+	public User(Long id, String firstname, String lastname, List<Product> list) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.list = list;
+    }
 
 	public Long getId() {
 		return id;
