@@ -3,8 +3,6 @@ package com.tactfactory.monprojetsb.monprojetsb.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +20,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tactfactory.monprojetsb.monprojetsb.ApplicationTests;
 import com.tactfactory.monprojetsb.monprojetsb.entities.Product;
-import com.tactfactory.monprojetsb.monprojetsb.entities.User;
-import com.tactfactory.monprojetsb.monprojetsb.mockito.MockitoUserRepository;
+import com.tactfactory.monprojetsb.monprojetsb.mockito.MockitoProductRepository;
 import com.tactfactory.monprojetsb.monprojetsb.repository.ProductRepository;
 import com.tactfactory.monprojetsb.monprojetsb.repository.UserRepository;
-import com.tactfactory.monprojetsb.monprojetsb.services.UserService;
+import com.tactfactory.monprojetsb.monprojetsb.services.ProductService;
 
 //pour les mocks
 @ActiveProfiles("test")
@@ -38,11 +35,11 @@ import com.tactfactory.monprojetsb.monprojetsb.services.UserService;
 @DataJpaTest
 @EntityScan(basePackages ="com.tactfactory.monprojetsb.monprojetsb.entities")
 @ComponentScan(basePackages ="com.tactfactory.monprojet")
-public class TestsUser {
+public class TestsProduct {
 
 	//@Autowired
 	@MockBean
-    private UserService userService;
+    private ProductService productService;
     private UserRepository userRepository;
     private ProductRepository productRepository;
 
@@ -56,41 +53,41 @@ public class TestsUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-	    final MockitoUserRepository mock = new MockitoUserRepository(this.userRepository);
+	    final MockitoProductRepository mock = new MockitoProductRepository(this.productRepository);
 	    mock.init();
-	    this.userRepository = mock.userRepository;
+	    this.productRepository = mock.productRepository;
     }
 
 	public void addElement() {
-		Long before = userRepository.count();
-	    userService.save(new User());
-	    Long after = userRepository.count();
+		Long before = productRepository.count();
+	    productService.save(new Product());
+	    Long after = productRepository.count();
 
 	    assertEquals(before + 1, after);
 	}
 
 	@Test
 	public void addElementWithoutPb() {
-		User userBase = new User(null, "Jean", "Lamoule", new ArrayList<Product>());
-        Long id = userService.save(userBase).getId();
-        User userFetch = userRepository.getUserById(id);
+		Product productBase = new Product(null, "Fourchette", 3f);
+        Long id = productService.save(productBase).getId();
+        Product productFetch = productRepository.getProductById(id);
 
-        assertTrue(compare(userBase, userFetch));
+        assertTrue(compare(productBase, productFetch));
 	}
 
 	@Test
 	public void updateElementWithoutPb() {
-		User userBase = new User(null, "Jean", "Lamoule", new ArrayList<Product>());
+		Product productBase = new Product(null, "Fourchette", 3f);
 
 	}
 
 	@Test
     public void getUserRight() {
-        User userBase = new User(null , "Jean", "Lamoule", new ArrayList<Product>());
-        Long id = userRepository.save(userBase).getId();
-        User userFetch = userService.getUserById(id);
+		Product productBase = new Product(null, "Fourchette", 3f);
+        Long id = productRepository.save(productBase).getId();
+        Product productFetch = productService.getProductById(id);
 
-        assertTrue(compare(userBase, userFetch));
+        assertTrue(compare(productBase, productFetch));
     }
 
 	public void getListRight(){
@@ -107,20 +104,20 @@ public class TestsUser {
 
 
 	//autres méthodes
-    public Boolean compare(User user1, User user2) {
+    public Boolean compare(Product p1, Product p2) {
         boolean result = true;
 
-        if (!user1.getId().equals(user2.getId())) {
+        if (!p1.getId().equals(p2.getId())) {
             result = false;
-            System.out.println("id: " + user1.getId() + " " + user2.getId());
+            System.out.println("id: " + p1.getId() + " " + p2.getId());
         }
-        if (!user1.getFirstname().equals(user2.getFirstname())) {
+        if (!p1.getName().equals(p2.getName())) {
             result = false;
-            System.out.println("firstname: " + user1.getFirstname() + " " + user2.getFirstname());
+            System.out.println("firstname: " + p1.getName() + " " + p2.getName());
         }
-        if (!user1.getLastname().equals(user2.getLastname())) {
+        if (!p1.getPrice().equals(p2.getPrice())) {
             result = false;
-            System.out.println("lastname: " + user1.getLastname() + " " + user2.getLastname());
+            System.out.println("lastname: " + p1.getPrice() + " " + p2.getPrice());
         }
 
         return result;
